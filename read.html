@@ -13,6 +13,36 @@
 <meta name="apple-mobile-web-app-title" content="One Leaf">
 <meta name="mobile-web-app-capable" content="yes">
 <script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<script src="app-build.js"></script>
+<script>
+/* In-app update alert: only inside the installed app (Capacitor). Checks a public version
+   file; if a newer build exists, shows a tap-to-update banner to the latest app file. */
+(function(){
+  function isApp(){ return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); }
+  if(!isApp() || typeof window.__APP_BUILD__ === 'undefined') return;
+  function banner(info){
+    if(document.getElementById('olUpd')) return;
+    var b=document.createElement('div'); b.id='olUpd';
+    b.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#2e5d34;color:#fff;font-family:system-ui,Segoe UI,sans-serif;display:flex;align-items:center;gap:10px;padding:11px 14px;box-shadow:0 -3px 12px rgba(0,0,0,.25)';
+    var m=document.createElement('div'); m.style.cssText='flex:1;font-size:14px;line-height:1.35';
+    m.textContent='🌿 A new version of One Leaf is ready.'+(info.note?(' '+info.note):'');
+    var a=document.createElement('a'); a.textContent='Update'; a.href=info.url; a.target='_blank'; a.rel='noopener';
+    a.style.cssText='background:#fff;color:#2e5d34;font-weight:600;font-size:14px;text-decoration:none;padding:8px 16px;border-radius:20px;white-space:nowrap';
+    var x=document.createElement('button'); x.textContent='✕'; x.setAttribute('aria-label','Dismiss');
+    x.style.cssText='background:transparent;border:0;color:#fff;font-size:16px;cursor:pointer;padding:4px 6px';
+    x.onclick=function(){ b.remove(); try{localStorage.setItem('ol_upd_dismiss',String(info.build));}catch(e){} };
+    b.appendChild(m); b.appendChild(a); b.appendChild(x); document.body.appendChild(b);
+  }
+  function check(){
+    fetch('https://justoneleaf.com/app-version.json?t='+Date.now()).then(function(r){return r.json();}).then(function(info){
+      if(!info||typeof info.build==='undefined')return;
+      var d=0; try{d=parseInt(localStorage.getItem('ol_upd_dismiss')||'0',10);}catch(e){}
+      if(info.build>window.__APP_BUILD__ && info.build>d) banner(info);
+    }).catch(function(){});
+  }
+  if(document.readyState==='complete') check(); else window.addEventListener('load',check);
+})();
+</script>
 <style>
   :root{
     --green:#2e5d34; --green-soft:#3f7a47; --leaf:#5fa463;
