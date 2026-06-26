@@ -389,6 +389,6 @@ var lastId=localStorage.getItem('olr_lastch'); var startAt=0;
 for(var k=0;k<CH.length;k++){ if(CH[k].id===lastId){ startAt=k; break; } }
 openChapter(startAt, true);
 </script>
-<script>setInterval(function(){try{var s=window.speechSynthesis;if(s&&s.speaking&&!s.paused){s.pause();s.resume();}}catch(e){}},9000);</script>
+<script>setInterval(function(){try{if(speaking&&!paused&&synth&&!synth.paused){synth.resume();}}catch(e){}},8000);</script>
 </body>
 </html>
