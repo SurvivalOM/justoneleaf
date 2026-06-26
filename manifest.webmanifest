@@ -1,0 +1,17 @@
+{
+  "name": "One Leaf Can Change Your Life",
+  "short_name": "One Leaf",
+  "description": "Read or hear the whole book, free and fully offline.",
+  "lang": "en",
+  "start_url": "read.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf7ec",
+  "theme_color": "#2e5d34",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
